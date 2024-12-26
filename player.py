@@ -6,11 +6,11 @@ from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHO
 
 class Player(CircleShape):
     def __init__(self, x, y):
-        super().__init__(x, y, PLAYER_RADIUS / 1.2)
+        super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.weapon_cooldown = 0
         image = pygame.image.load("assets/spaceship.png")
-        self.image = pygame.transform.scale(image, (PLAYER_RADIUS * 2, PLAYER_RADIUS * 2))
+        self.image = pygame.transform.scale(image, (PLAYER_RADIUS * 4, PLAYER_RADIUS * 4))
         self.weapon = "standard"
         self.weapon_timer = 0
         self.shot_cone_active = False
@@ -76,10 +76,10 @@ class Player(CircleShape):
         # Determine weapon type
         if self.shot_cone_active:
             for i in range(-30, 30, 5):
-                shot = Shot(self.position.x, self.position.y)
+                shot = Shot(self.position.x, self.position.y, self.rotation + i)
                 shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation + i) * PLAYER_SHOOT_SPEED
         else: 
-            shot = Shot(self.position.x, self.position.y)
+            shot = Shot(self.position.x, self.position.y, self.rotation)
             shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         
     def reset(self, screen, x, y):

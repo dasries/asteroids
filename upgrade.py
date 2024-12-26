@@ -60,7 +60,7 @@ class Fireball(Upgrade):
     def upgrade(self, player):
         self.kill()
         for i in range(0, 360, 10):
-            shot = Shot(player.position.x, player.position.y)
+            shot = Shot(player.position.x, player.position.y, i)
             shot.velocity = pygame.Vector2(0, 1).rotate(i) * PLAYER_SHOOT_SPEED
         
     

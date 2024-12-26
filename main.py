@@ -20,14 +20,15 @@ def main():
     pygame.font.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     background = pygame.image.load("assets/night_sky.jpeg")
+    font = pygame.font.SysFont('arial', 40)
     
     # Variables
-    font = pygame.font.Font(None, 36)
     clock = pygame.time.Clock()
     dt = 0
     score = 0
     level = 0
     level_timer = 10
+    lvl_text = font.render(f'Level: 1', True, "lightgray")
     
     # Objects
     updatable = pygame.sprite.Group()
@@ -76,6 +77,8 @@ def main():
                 player.reset(screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
                 score = 0
                 level = 0
+                level_timer = 10
+                lvl_text = font.render(f'Level: 1', True, "lightgray")
                 game_state = GAME_STATE["GAME"]
             if keys[pygame.K_q]:
                 pygame.quit()
@@ -111,13 +114,19 @@ def main():
             
             score += SCORE_TIME_INCREMENT
             
+            if level_timer < 8:
+                lvl_text = font.render("", True, "white")
+            
             level_timer -= dt
             if level_timer <= 0:
                 level_timer = 10
                 if level < len(ASTEROID_SPAWN_RATE):
                     level += 1
-                
+                    lvl_text = font.render(f'Level: {level + 1}', True, "lightgray")
             
+            screen.blit(lvl_text, (SCREEN_WIDTH/2 - lvl_text.get_width()/2, SCREEN_HEIGHT/2 + lvl_text.get_height()/2))
+                
+                
             pygame.display.flip()
             
             # Convert from ms to s; tick will pause the game until 1/60th of a second has passed
