@@ -1,5 +1,5 @@
 import pygame
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import ASTEROID_SPAWN_RATE, SCREEN_WIDTH, SCREEN_HEIGHT
 
 def draw_start_menu(screen):
     font = pygame.font.SysFont('arial', 40)
@@ -20,3 +20,14 @@ def draw_game_over_screen(screen, score):
    screen.blit(restart_button, (SCREEN_WIDTH/2 - restart_button.get_width()/2, SCREEN_HEIGHT/2 + restart_button.get_height() * 2))
    screen.blit(quit_button, (SCREEN_WIDTH/2 - quit_button.get_width()/2, SCREEN_HEIGHT/2 + quit_button.get_height() * 3))
    pygame.display.update()
+   
+def draw_game_stats(screen, score, level, lvl_text):
+    font = pygame.font.SysFont('arial', 40)
+    # Draw the score to the screen
+    score_text = font.render(f'Score: {score}', True, (255, 255, 255))
+    screen.blit(score_text, (10, 10))
+    # Draw the level to the screen
+    score_text = font.render(f'Level: {"Insane" if level > len(ASTEROID_SPAWN_RATE) - 1 else level + 1}', True, (255, 255, 255))
+    screen.blit(score_text, (SCREEN_WIDTH - score_text.get_width() - 5, 10))
+    # Draw level announcement
+    screen.blit(lvl_text, (SCREEN_WIDTH/2 - lvl_text.get_width()/2, SCREEN_HEIGHT/2 + lvl_text.get_height()/2))

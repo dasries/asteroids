@@ -3,7 +3,7 @@
 # throughout this file
 import pygame
 from constants import *
-from helper import draw_game_over_screen, draw_start_menu
+from helper import draw_game_over_screen, draw_game_stats, draw_start_menu
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
@@ -90,12 +90,13 @@ def main():
                 object.update(dt, level)
             
             for asteroid in asteroids:
-                for shot in shots:
-                    if asteroid.check_collision(shot):
-                        shot.kill()
-                        score += asteroid.split()
-                if asteroid.check_collision(player):
-                    game_state = GAME_STATE["OVER"]
+                if asteroid.explode == False:
+                    for shot in shots:
+                        if asteroid.check_collision(shot):
+                            shot.kill()
+                            score += asteroid.split()
+                    if asteroid.check_collision(player):
+                        game_state = GAME_STATE["OVER"]
             
             for upgrade in upgrades:
                 for shot in shots:
@@ -104,13 +105,6 @@ def main():
                 
             for object in drawable:
                 object.draw(screen)
-            
-            # Draw the score to the screen
-            score_text = font.render(f'Score: {score}', True, (255, 255, 255))
-            screen.blit(score_text, (10, 10))
-            # Draw the level to the screen
-            score_text = font.render(f'Level: {"Insane" if level > len(ASTEROID_SPAWN_RATE) - 1 else level + 1}', True, (255, 255, 255))
-            screen.blit(score_text, (SCREEN_WIDTH - score_text.get_width() - 5, 10))
             
             score += SCORE_TIME_INCREMENT
             
@@ -124,7 +118,7 @@ def main():
                     level += 1
                     lvl_text = font.render(f'Level: {level + 1}', True, "lightgray")
             
-            screen.blit(lvl_text, (SCREEN_WIDTH/2 - lvl_text.get_width()/2, SCREEN_HEIGHT/2 + lvl_text.get_height()/2))
+            draw_game_stats(screen, score, level, lvl_text)
                 
                 
             pygame.display.flip()
